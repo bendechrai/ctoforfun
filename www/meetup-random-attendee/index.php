@@ -31,6 +31,11 @@ if(isset($_GET['url'])) {
 		// Strip out all instances of links to attendees, and capture the names
 		preg_match_all("#<a href=\"http://www.meetup.com/$groupname/members/[0-9]*\">([^<]*)</a>#", $html, $array);
 		$names = $array[1];
+		
+		// Remove any instance of "Members" from the names array
+		foreach (array_keys($names, 'Members') as $key) {
+    		unset($names[$key]);
+		}
 
 		// Remove duplicates (i.e. attending convenors), and select one array key randomly
 		$selected = array_rand( array_unique( $names ));
