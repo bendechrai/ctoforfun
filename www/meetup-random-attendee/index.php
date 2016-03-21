@@ -87,6 +87,6 @@ if(isset($_GET['url'])) {
     </fieldset>
   </form>
 
-  <p><strong>Note:</strong> This tool is provided as-is and without warranty of any sort. It has not been audited for its randomness or effectiveness for running games of chance. You can <a href="index.txt">see the raw PHP file used to generate this page here</a>. Bug reports, feature requests and feedback welcome at <a href="https://twitter.com/ctoforhireco">@ctoforhireco</a>.</p>
+  <p><strong>Note:</strong> This tool is provided as-is and without warranty of any sort. It has not been audited for its randomness or effectiveness for running games of chance. Issues and pull requests welcome at <a href="https://github.com/bendechrai/ctoforfun">github/bendechrai/ctoforfun</a>.</p>
 
 <?php include '../foot.php'; ?>
