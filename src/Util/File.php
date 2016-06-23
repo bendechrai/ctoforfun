@@ -4,18 +4,24 @@ namespace Gilbitron\Util;
 
 class File {
 
-    public static function exists($filename) {
+    public function exists($filename) {
         return file_exists($filename);
     }
 
-    public static function get($path) {
+    public function get($path) {
         return file_get_contents($path);
     }
 
-    public static function put($path, $contents)
+    public function put($path, $contents)
     {
        $result = file_put_contents($path, $contents);
        
        return $result;
     }
+    
+    public function time($path)
+    {
+        return filemtime($path);
+    }
+    
 }

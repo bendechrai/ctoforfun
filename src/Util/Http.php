@@ -4,7 +4,7 @@ namespace Gilbitron\Util;
 
 class Http
 {
-    public static function get($url)
+    public function get($url)
     {
         if (function_exists("curl_init")) {
             $ch = curl_init();

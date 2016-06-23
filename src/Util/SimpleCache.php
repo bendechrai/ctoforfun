@@ -22,36 +22,38 @@ class SimpleCache {
     // Cache file extension
     public $cache_extension = '.cache';
     
-    public function __construct($cache_path = 'cache/') {
+    public function __construct($cache_path, File $file, Http $http) {
         $this->cache_path = $cache_path;
+        $this->file = $file;
+        $this->http = $http;
     }
 
     public function set($label, $data) {
-        File::put($this->cache_path . $this->safe_filename($label) . $this->cache_extension, $data);
+        $this->file->put($this->cache_path . $this->safe_filename($label) . $this->cache_extension, $data);
     }
 
     public function get($label) {
         if ($this->is_cached($label)) {
             $filename = $this->cache_path . $this->safe_filename($label) . $this->cache_extension;
-            return File::get($filename);
+            return $this->file->get($filename);
         }
 
         return false;
     }
     
     public function findOrFetch($url) {
-        if ($data = self::get($label)) {
+        if ($data = $this->get($url)) {
             return $data;
         }
-            $data = Http::get($url);
-            self::set($label, $data);
+            $data = $this->http->get($url);
+            $this->set($url, $data);
             return $data;
     }
 
     public function is_cached($label) {
         $filename = $this->cache_path . $this->safe_filename($label) . $this->cache_extension;
 
-        if (File::exists($filename) && (filemtime($filename) + $this->cache_time >= time()))
+        if ($this->file->exists($filename) && ($this->file->time($filename) + $this->cache_time >= time()))
             return true;
 
         return false;
