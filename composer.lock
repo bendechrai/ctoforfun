@@ -308,12 +308,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPieces/Framework.git",
-                "reference": "6d37a8a003b38aa9273dd2ec73e55df91c5359f4"
+                "reference": "a558717e3af6645c890a3636ed596055c50d40c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPieces/Framework/zipball/6d37a8a003b38aa9273dd2ec73e55df91c5359f4",
-                "reference": "6d37a8a003b38aa9273dd2ec73e55df91c5359f4",
+                "url": "https://api.github.com/repos/PHPieces/Framework/zipball/a558717e3af6645c890a3636ed596055c50d40c8",
+                "reference": "a558717e3af6645c890a3636ed596055c50d40c8",
                 "shasum": ""
             },
             "require": {
@@ -373,7 +373,7 @@
                 "source": "https://github.com/PHPieces/Framework/tree/master",
                 "issues": "https://github.com/PHPieces/Framework/issues"
             },
-            "time": "2016-06-25 04:11:27"
+            "time": "2016-06-25 09:26:55"
         },
         {
             "name": "psr/http-message",
