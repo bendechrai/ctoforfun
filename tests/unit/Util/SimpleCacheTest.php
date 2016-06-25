@@ -3,6 +3,8 @@
 namespace Gilbitron\Util;
 
 use Mockery;
+use PHPieces\Framework\Util\File;
+use PHPieces\Framework\Util\Http;
 
 class SimpleCacheTest extends \PHPUnit_Framework_TestCase
 {
