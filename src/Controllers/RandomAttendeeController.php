@@ -19,16 +19,20 @@ class RandomAttendeeController {
         $this->picker = $picker;
     }
 
-    public function home(){
-
-        echo $this->templates->render('home');
+    public function home(ServerRequestInterface $request, ResponseInterface $response){
+        
+        $response->getBody()->write($this->templates->render('home'));
+        
+        return $response;
     }
 
-    public function show() {
+    public function show(ServerRequestInterface $request, ResponseInterface $response) {
 
         $hostsOK = $this->picker->hostsOK($this->file->get('/etc/hosts'));
 
-        echo $this->templates->render('meetup-random-attendee', [ 'hostsOK' => $hostsOK ]);
+        $response->getBody()->write($this->templates->render('meetup-random-attendee', [ 'hostsOK' => $hostsOK ]));
+        
+        return $response;
     }
 
     public function spin(ServerRequestInterface $request, ResponseInterface $response) {
@@ -40,8 +44,10 @@ class RandomAttendeeController {
         $html = $this->cache->findOrFetch($url, $url);
 
         $name = $this->picker->getRandomName($html);
-
-        echo $this->templates->render('meetup-random-attendee', [ 'hostsOK' => $hostsOK, 'name' => $name, 'url' => $url ]);
+        
+        $response->getBody()->write($this->templates->render('meetup-random-attendee', [ 'hostsOK' => $hostsOK, 'name' => $name, 'url' => $url ]));
+                
+        return $response;
     }
 
 }
