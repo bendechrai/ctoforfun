@@ -12,6 +12,9 @@ namespace Gilbitron\Util;
  * http://www.opensource.org/licenses/mit-license.php
  */
 
+use PHPieces\Framework\Util\File;
+use PHPieces\Framework\Util\Http;
+
 class SimpleCache {
 
     // Path to cache folder (with trailing /)

@@ -16,7 +16,7 @@
     </div>
 <?php endif; ?>
 
-<form class="form-horizontal">
+<form class="form-horizontal" method="post">
     <fieldset>
 
         <div class="form-group">
