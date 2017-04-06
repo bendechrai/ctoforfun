@@ -1,5 +1,11 @@
 <?php
 
+if(!file_exists('env.php')) {
+	echo 'env.php not found';
+	exit;
+}
+require 'env.php';
+
 // For sanity
 $url = '';
 $name = '';
@@ -17,31 +23,28 @@ if(isset($_GET['url'])) {
 	$url = trim($url, '/') . '/'; // Ensure URL has a trailing slash
 
 	// Validate URL format, so this tool isn't used to hit random sites, and capture the Meetup group name while we're at it
-	if (preg_match ('#^https?://www.meetup.com/([^\/]+)/events/[0-9]+/$#', $url, $results)) {
+	if (preg_match ('#^https?://www.meetup.com/([^\/]+)/events/([0-9]+)/$#', $url, $results)) {
 
+		// Build API URL
 		$groupname = $results[1];
+		$eventid = $results[2];
+		$apiurl = "https://api.meetup.com/{$groupname}/events/{$eventid}/rsvps?key={$meetup_api_key}";
 
-		// URL is valid. Get contents (via cache) ** cache directory is not in the docroot **
+		// URL is valid. Get contents (via cache) and parse
 		require '../SimpleCache.php';
 		$cache = new Gilbitron\Util\SimpleCache();
 		$cache->cache_path = '../../cache/';
 		$cache->cache_time = 60 * 5;
-		$html = $cache->get_data($url, $url);
+		$json = $cache->get_data($apiurl, $apiurl);
+		$rsvps = json_decode($json, true);
 
-		// Strip out all instances of links to attendees, and capture the names
-		preg_match_all("#<a class=\"unlink\" href=\"https://www.meetup.com/$groupname/members/[0-9]*/\">([^<]*)</a>#", $html, $array);
-		$names = $array[1];
+		// Filter our event hosts
+		$rsvps = array_filter($rsvps, function($rsvp) {
+			return !$rsvp['member']['event_context']['host'];
+		});
 
-		// Remove any instance of "Members" from the names array
-		foreach (array_keys($names, 'Members') as $key) {
-			unset($names[$key]);
-		}
-
-		// Remove duplicates (i.e. attending convenors), and select one array key randomly
-		$selected = array_rand( array_unique( $names ));
-
-		// Extract the value -- as this was ripped from HTML, it is already HTML encoded :)
-		$name = $names[$selected];
+		// Select one at random
+		$rsvp = $rsvps[array_rand($rsvps)];
 	}
 		
 }
@@ -57,9 +60,10 @@ if(isset($_GET['url'])) {
     </div>
   <?php endif; ?>
 
-  <?php if( isset($name) && $name != '' ) : ?>
+  <?php if( isset($rsvp) ) : ?>
     <div class="meetup-random-attendee-winner jumbotron">
-      <h1><?php echo $name ?></h1>
+      <h1><?php echo htmlspecialchars($rsvp['member']['name']) ?></h1>
+      <p><img src="<?php echo $rsvp['member']['photo']['photo_link'] ?>" /></p>
       <p class="lead">You are a winner!</p>
     </div>
   <?php endif; ?>
